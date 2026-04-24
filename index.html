@@ -3,9 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>
-            Simulador VCT Americas 2026 - Stage 1 (Con Probabilidades)
-        </title>
+        <title>Simulador VCT Americas 2026 - Stage 1 (Con Probabilidades)</title>
         <style>
             :root {
                 --bg-color: #0f1923;
@@ -47,8 +45,8 @@
                 border: 1px solid var(--border-color);
                 border-radius: 8px;
                 padding: 20px;
-                flex: 1 1 550px;
-                max-width: 750px;
+                flex: 1 1 580px;
+                max-width: 800px;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             }
             .group-header {
@@ -59,12 +57,7 @@
                 padding-bottom: 10px;
                 margin-bottom: 15px;
             }
-            h2 {
-                margin: 0;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-            }
-
+            h2 { margin: 0; text-transform: uppercase; letter-spacing: 1px; }
             .calc-btn {
                 background-color: var(--accent-pink);
                 color: white;
@@ -75,25 +68,16 @@
                 font-weight: bold;
                 transition: all 0.2s ease;
             }
-            .calc-btn:hover {
-                background-color: #d6006b;
-                transform: scale(1.05);
-            }
-            .calc-btn:disabled {
-                background-color: #555;
-                cursor: not-allowed;
-                transform: none;
-            }
-
+            .calc-btn:hover { background-color: #d6006b; transform: scale(1.05); }
+            .calc-btn:disabled { background-color: #555; cursor: not-allowed; transform: none; }
             table {
                 width: 100%;
                 border-collapse: collapse;
                 font-size: 0.9em;
                 margin-bottom: 30px;
             }
-            th,
-            td {
-                padding: 12px 6px;
+            th, td {
+                padding: 10px 5px;
                 text-align: center;
                 border-bottom: 1px solid var(--border-color);
             }
@@ -104,47 +88,19 @@
                 font-size: 0.75em;
                 color: #8b978f;
             }
-            .team-name {
-                text-align: left;
-                font-weight: bold;
-            }
-
-            .rank-1 {
-                border-left: 3px solid var(--accent-pink);
-            }
-            .rank-2 {
-                border-left: 3px solid var(--accent-cyan);
-            }
-            .rank-4 {
-                border-left: 3px solid #ece8e1;
-            }
-
-            .prob-cell {
-                font-family: monospace;
-                font-size: 1.1em;
-                line-height: 1.2;
-            }
-            .prob-count {
-                display: block;
-                margin-top: 4px;
-                font-size: 0.75em;
-                color: #a4a9ad;
-                font-weight: normal;
-            }
-            .prob-high {
-                color: var(--accent-cyan);
-                font-weight: bold;
-            }
-            .prob-med {
-                color: #f1c40f;
-            }
-            .prob-low {
-                color: #e74c3c;
-            }
-            .prob-zero {
-                color: #555;
-            }
-
+            .team-name { text-align: left; font-weight: bold; }
+            .round-diff-pos { color: var(--accent-cyan); }
+            .round-diff-neg { color: #e74c3c; }
+            .round-diff-zero { color: #8b978f; }
+            .rank-1 { border-left: 3px solid var(--accent-pink); }
+            .rank-2 { border-left: 3px solid var(--accent-cyan); }
+            .rank-4 { border-left: 3px solid #ece8e1; }
+            .prob-cell { font-family: monospace; font-size: 1.1em; line-height: 1.2; }
+            .prob-count { display: block; margin-top: 4px; font-size: 0.75em; color: #a4a9ad; font-weight: normal; }
+            .prob-high { color: var(--accent-cyan); font-weight: bold; }
+            .prob-med { color: #f1c40f; }
+            .prob-low { color: #e74c3c; }
+            .prob-zero { color: #555; }
             .matches-container h3 {
                 font-size: 1.1em;
                 color: #8b978f;
@@ -152,11 +108,7 @@
                 border-bottom: 1px solid var(--border-color);
                 padding-bottom: 5px;
             }
-            .matches-list {
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-            }
+            .matches-list { display: flex; flex-direction: column; gap: 8px; }
             .match-row {
                 display: flex;
                 justify-content: space-between;
@@ -167,26 +119,10 @@
                 font-size: 0.9em;
                 transition: background 0.2s;
             }
-            .match-row:hover {
-                background: rgba(255, 255, 255, 0.05);
-            }
-
-            .match-info {
-                display: flex;
-                flex-direction: column;
-                gap: 4px;
-            }
-            .match-date {
-                font-size: 0.8em;
-                color: #8b978f;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-            }
-            .match-teams {
-                font-weight: 500;
-                font-size: 1.05em;
-            }
-
+            .match-row:hover { background: rgba(255, 255, 255, 0.05); }
+            .match-info { display: flex; flex-direction: column; gap: 4px; }
+            .match-date { font-size: 0.8em; color: #8b978f; text-transform: uppercase; letter-spacing: 0.5px; }
+            .match-teams { font-weight: 500; font-size: 1.05em; }
             .match-row select {
                 background-color: var(--bg-color);
                 color: var(--text-color);
@@ -197,57 +133,35 @@
                 cursor: pointer;
                 font-weight: bold;
             }
-            .kru-highlight {
-                color: var(--accent-pink);
-                text-shadow: 0 0 5px rgba(255, 0, 127, 0.4);
-            }
+            .kru-highlight { color: var(--accent-pink); text-shadow: 0 0 5px rgba(255, 0, 127, 0.4); }
         </style>
     </head>
     <body>
         <h1>Simulador VCT Americas 2026</h1>
-        <p class="subtitle">
-            Ingresa resultados y calcula las probabilidades exactas de
-            clasificación
-        </p>
+        <p class="subtitle">Ingresa resultados y calcula las probabilidades exactas de clasificación</p>
 
         <div class="container">
             <div class="group-section">
                 <div class="group-header">
                     <h2>Grupo Alpha</h2>
-                    <button
-                        class="calc-btn"
-                        id="btn-alpha"
-                        onclick="runProbabilities('alpha')"
-                    >
-                        Calcular Probabilidades
-                    </button>
+                    <button class="calc-btn" id="btn-alpha" onclick="runProbabilities('alpha')">Calcular Probabilidades</button>
                 </div>
                 <table id="alpha-table">
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th style="text-align: left">Equipo</th>
+                            <th style="text-align:left">Equipo</th>
                             <th>W-L</th>
                             <th>Mapas</th>
-                            <th
-                                title="Probabilidad de quedar 1ro (Bye a Semis)"
-                            >
-                                1º (Bye)
-                            </th>
-                            <th
-                                title="Probabilidad de quedar 2do o 3ro (Upper)"
-                            >
-                                2º-3º (Up)
-                            </th>
-                            <th title="Probabilidad de quedar 4to (Lower)">
-                                4º (Low)
-                            </th>
+                            <th title="Diferencia de rondas">Rondas</th>
+                            <th title="Probabilidad de quedar 1ro (Bye a Semis)">1º (Bye)</th>
+                            <th title="Probabilidad de quedar 2do o 3ro (Upper)">2º-3º (Up)</th>
+                            <th title="Probabilidad de quedar 4to (Lower)">4º (Low)</th>
                             <th title="Probabilidad de eliminación">OUT</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
                 </table>
-
                 <div class="matches-container">
                     <h3>Encuentros Restantes (Alpha)</h3>
                     <div id="alpha-matches" class="matches-list"></div>
@@ -257,40 +171,24 @@
             <div class="group-section">
                 <div class="group-header">
                     <h2>Grupo Omega</h2>
-                    <button
-                        class="calc-btn"
-                        id="btn-omega"
-                        onclick="runProbabilities('omega')"
-                    >
-                        Calcular Probabilidades
-                    </button>
+                    <button class="calc-btn" id="btn-omega" onclick="runProbabilities('omega')">Calcular Probabilidades</button>
                 </div>
                 <table id="omega-table">
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th style="text-align: left">Equipo</th>
+                            <th style="text-align:left">Equipo</th>
                             <th>W-L</th>
                             <th>Mapas</th>
-                            <th
-                                title="Probabilidad de quedar 1ro (Bye a Semis)"
-                            >
-                                1º (Bye)
-                            </th>
-                            <th
-                                title="Probabilidad de quedar 2do o 3ro (Upper)"
-                            >
-                                2º-3º (Up)
-                            </th>
-                            <th title="Probabilidad de quedar 4to (Lower)">
-                                4º (Low)
-                            </th>
+                            <th title="Diferencia de rondas">Rondas</th>
+                            <th title="Probabilidad de quedar 1ro (Bye a Semis)">1º (Bye)</th>
+                            <th title="Probabilidad de quedar 2do o 3ro (Upper)">2º-3º (Up)</th>
+                            <th title="Probabilidad de quedar 4to (Lower)">4º (Low)</th>
                             <th title="Probabilidad de eliminación">OUT</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
                 </table>
-
                 <div class="matches-container">
                     <h3>Encuentros Restantes (Omega)</h3>
                     <div id="omega-matches" class="matches-list"></div>
@@ -299,315 +197,202 @@
         </div>
 
         <script>
-            const alphaTeams = [
-                "Leviatán",
-                "MIBR",
-                "LOUD",
-                "ENVY",
-                "G2 Esports",
-                "Cloud9",
-            ];
-            const omegaTeams = [
-                "KRÜ Esports",
-                "FURIA",
-                "Sentinels",
-                "100 Thieves",
-                "Evil Geniuses",
-                "NRG",
-            ];
+            const alphaTeams = ["Leviatán","MIBR","LOUD","ENVY","G2 Esports","Cloud9"];
+            const omegaTeams = ["KRÜ Esports","FURIA","Sentinels","100 Thieves","Evil Geniuses","NRG"];
 
-            // Resultados reales de las Semanas 1 y 2
+            // maps: array of {r1, r2} — rounds won by t1 and t2 on each map
             const alphaPlayed = [
-                { t1: "G2 Esports", t2: "MIBR", s1: 0, s2: 2 },
-                { t1: "G2 Esports", t2: "Leviatán", s1: 1, s2: 2 },
-                { t1: "MIBR", t2: "LOUD", s1: 2, s2: 0 },
-                { t1: "Cloud9", t2: "Leviatán", s1: 0, s2: 2 },
-                { t1: "Cloud9", t2: "ENVY", s1: 1, s2: 2 },
-                { t1: "ENVY", t2: "LOUD", s1: 1, s2: 2 },
-                { t1: "Leviatán", t2: "ENVY", s1: 2, s2: 0 },
+                { t1:"G2 Esports",  t2:"MIBR",      s1:0, s2:2, maps:[{r1:8,r2:13},{r1:14,r2:16}] },
+                { t1:"ENVY",        t2:"LOUD",       s1:1, s2:2, maps:[{r1:13,r2:9},{r1:11,r2:13},{r1:8,r2:13}] },
+                { t1:"Cloud9",      t2:"Leviatán",   s1:0, s2:2, maps:[{r1:6,r2:13},{r1:5,r2:13}] },
+                { t1:"Cloud9",      t2:"ENVY",       s1:1, s2:2, maps:[{r1:13,r2:11},{r1:5,r2:13},{r1:9,r2:13}] },
+                { t1:"G2 Esports",  t2:"Leviatán",   s1:1, s2:2, maps:[{r1:13,r2:6},{r1:11,r2:13},{r1:12,r2:14}] },
+                { t1:"MIBR",        t2:"LOUD",       s1:2, s2:0, maps:[{r1:13,r2:10},{r1:13,r2:4}] },
+                { t1:"Leviatán",    t2:"ENVY",       s1:2, s2:0, maps:[{r1:13,r2:4},{r1:13,r2:4}] },
             ];
 
             const omegaPlayed = [
-                { t1: "FURIA", t2: "NRG", s1: 2, s2: 0 },
-                { t1: "FURIA", t2: "Evil Geniuses", s1: 2, s2: 1 },
-                { t1: "NRG", t2: "KRÜ Esports", s1: 0, s2: 2 },
-                { t1: "100 Thieves", t2: "Evil Geniuses", s1: 2, s2: 0 },
-                { t1: "100 Thieves", t2: "Sentinels", s1: 0, s2: 2 },
-                { t1: "Sentinels", t2: "KRÜ Esports", s1: 0, s2: 2 },
+                { t1:"Sentinels",     t2:"KRÜ Esports",    s1:0, s2:2, maps:[{r1:8,r2:13},{r1:9,r2:13}] },
+                { t1:"100 Thieves",   t2:"Evil Geniuses",  s1:2, s2:0, maps:[{r1:13,r2:8},{r1:13,r2:4}] },
+                { t1:"FURIA",         t2:"NRG",            s1:2, s2:0, maps:[{r1:13,r2:7},{r1:13,r2:10}] },
+                { t1:"FURIA",         t2:"Evil Geniuses",  s1:2, s2:1, maps:[{r1:12,r2:14},{r1:13,r2:5},{r1:13,r2:10}] },
+                { t1:"NRG",           t2:"KRÜ Esports",    s1:0, s2:2, maps:[{r1:10,r2:13},{r1:8,r2:13}] },
+                { t1:"100 Thieves",   t2:"Sentinels",      s1:0, s2:2, maps:[{r1:10,r2:13},{r1:17,r2:19}] },
             ];
 
-            // Partidos faltantes ordenados cronológicamente por grupo
             const alphaRemaining = [
-                {
-                    t1: "G2 Esports",
-                    t2: "LOUD",
-                    date: "Vie 24 Abr",
-                    s1: null,
-                    s2: null,
-                },
-                {
-                    t1: "MIBR",
-                    t2: "Cloud9",
-                    date: "Dom 26 Abr",
-                    s1: null,
-                    s2: null,
-                },
-                {
-                    t1: "MIBR",
-                    t2: "Leviatán",
-                    date: "Vie 1 May",
-                    s1: null,
-                    s2: null,
-                },
-                {
-                    t1: "Cloud9",
-                    t2: "LOUD",
-                    date: "Dom 3 May",
-                    s1: null,
-                    s2: null,
-                },
-                {
-                    t1: "G2 Esports",
-                    t2: "ENVY",
-                    date: "Dom 3 May",
-                    s1: null,
-                    s2: null,
-                },
-                {
-                    t1: "G2 Esports",
-                    t2: "Cloud9",
-                    date: "Sáb 9 May",
-                    s1: null,
-                    s2: null,
-                },
-                {
-                    t1: "MIBR",
-                    t2: "ENVY",
-                    date: "Sáb 9 May",
-                    s1: null,
-                    s2: null,
-                },
-                {
-                    t1: "Leviatán",
-                    t2: "LOUD",
-                    date: "Dom 10 May",
-                    s1: null,
-                    s2: null,
-                },
+                { t1:"G2 Esports", t2:"LOUD",      date:"Vie 24 Abr", s1:null, s2:null, maps:null },
+                { t1:"MIBR",       t2:"Cloud9",    date:"Dom 26 Abr", s1:null, s2:null, maps:null },
+                { t1:"Leviatán",   t2:"MIBR",      date:"Vie 1 May",  s1:null, s2:null, maps:null },
+                { t1:"LOUD",       t2:"Cloud9",    date:"Dom 3 May",  s1:null, s2:null, maps:null },
+                { t1:"G2 Esports", t2:"ENVY",      date:"Dom 3 May",  s1:null, s2:null, maps:null },
+                { t1:"G2 Esports", t2:"Cloud9",    date:"Sáb 9 May",  s1:null, s2:null, maps:null },
+                { t1:"ENVY",       t2:"MIBR",      date:"Sáb 9 May",  s1:null, s2:null, maps:null },
+                { t1:"LOUD",       t2:"Leviatán",  date:"Dom 10 May", s1:null, s2:null, maps:null },
             ];
 
             const omegaRemaining = [
-                {
-                    t1: "FURIA",
-                    t2: "KRÜ Esports",
-                    date: "Sáb 25 Abr",
-                    s1: null,
-                    s2: null,
-                },
-                {
-                    t1: "NRG",
-                    t2: "100 Thieves",
-                    date: "Sáb 25 Abr",
-                    s1: null,
-                    s2: null,
-                },
-                {
-                    t1: "Evil Geniuses",
-                    t2: "Sentinels",
-                    date: "Dom 26 Abr",
-                    s1: null,
-                    s2: null,
-                },
-                {
-                    t1: "NRG",
-                    t2: "Evil Geniuses",
-                    date: "Vie 1 May",
-                    s1: null,
-                    s2: null,
-                },
-                {
-                    t1: "100 Thieves",
-                    t2: "KRÜ Esports",
-                    date: "Sáb 2 May",
-                    s1: null,
-                    s2: null,
-                },
-                {
-                    t1: "FURIA",
-                    t2: "Sentinels",
-                    date: "Sáb 2 May",
-                    s1: null,
-                    s2: null,
-                },
-                {
-                    t1: "Evil Geniuses",
-                    t2: "KRÜ Esports",
-                    date: "Vie 8 May",
-                    s1: null,
-                    s2: null,
-                },
-                {
-                    t1: "FURIA",
-                    t2: "100 Thieves",
-                    date: "Vie 8 May",
-                    s1: null,
-                    s2: null,
-                },
-                {
-                    t1: "NRG",
-                    t2: "Sentinels",
-                    date: "Dom 10 May",
-                    s1: null,
-                    s2: null,
-                },
+                { t1:"FURIA",          t2:"KRÜ Esports",   date:"Sáb 25 Abr", s1:null, s2:null, maps:null },
+                { t1:"NRG",            t2:"100 Thieves",   date:"Sáb 25 Abr", s1:null, s2:null, maps:null },
+                { t1:"Evil Geniuses",  t2:"Sentinels",     date:"Dom 26 Abr", s1:null, s2:null, maps:null },
+                { t1:"Evil Geniuses",  t2:"NRG",           date:"Vie 1 May",  s1:null, s2:null, maps:null },
+                { t1:"KRÜ Esports",    t2:"100 Thieves",   date:"Sáb 2 May",  s1:null, s2:null, maps:null },
+                { t1:"FURIA",          t2:"Sentinels",     date:"Sáb 2 May",  s1:null, s2:null, maps:null },
+                { t1:"KRÜ Esports",    t2:"Evil Geniuses", date:"Vie 8 May",  s1:null, s2:null, maps:null },
+                { t1:"FURIA",          t2:"100 Thieves",   date:"Vie 8 May",  s1:null, s2:null, maps:null },
+                { t1:"Sentinels",      t2:"NRG",           date:"Dom 10 May", s1:null, s2:null, maps:null },
             ];
 
             let probabilitiesCache = { alpha: null, omega: null };
 
+            // Generates default 13-0 per map for a given match score
+            function generateDefaultMaps(s1, s2) {
+                if (s1 === 2 && s2 === 0) return [{r1:13,r2:0},{r1:13,r2:0}];
+                if (s1 === 2 && s2 === 1) return [{r1:13,r2:0},{r1:0,r2:13},{r1:13,r2:0}];
+                if (s1 === 1 && s2 === 2) return [{r1:0,r2:13},{r1:13,r2:0},{r1:0,r2:13}];
+                if (s1 === 0 && s2 === 2) return [{r1:0,r2:13},{r1:0,r2:13}];
+                return [];
+            }
+
             function getBaseStats(teams) {
                 let stats = {};
-                teams.forEach(
-                    (t) =>
-                        (stats[t] = {
-                            name: t,
-                            matchWins: 0,
-                            matchLosses: 0,
-                            mapWins: 0,
-                            mapLosses: 0,
-                        }),
-                );
+                teams.forEach(t => stats[t] = {
+                    name: t,
+                    matchWins: 0, matchLosses: 0,
+                    mapWins: 0,   mapLosses: 0,
+                    roundWins: 0, roundLosses: 0,
+                });
                 return stats;
             }
 
-            function applyMatch(stats, t1, t2, s1, s2) {
-                stats[t1].mapWins += s1;
+            function applyMatch(stats, t1, t2, s1, s2, maps) {
+                stats[t1].mapWins   += s1;
                 stats[t1].mapLosses += s2;
-                stats[t2].mapWins += s2;
+                stats[t2].mapWins   += s2;
                 stats[t2].mapLosses += s1;
-                if (s1 > s2) {
-                    stats[t1].matchWins++;
-                    stats[t2].matchLosses++;
-                } else if (s2 > s1) {
-                    stats[t2].matchWins++;
-                    stats[t1].matchLosses++;
+                if (maps) {
+                    maps.forEach(m => {
+                        stats[t1].roundWins   += m.r1;
+                        stats[t1].roundLosses += m.r2;
+                        stats[t2].roundWins   += m.r2;
+                        stats[t2].roundLosses += m.r1;
+                    });
                 }
+                if (s1 > s2) { stats[t1].matchWins++; stats[t2].matchLosses++; }
+                else if (s2 > s1) { stats[t2].matchWins++; stats[t1].matchLosses++; }
             }
 
-            function removeMatch(stats, t1, t2, s1, s2) {
-                stats[t1].mapWins -= s1;
+            function removeMatch(stats, t1, t2, s1, s2, maps) {
+                stats[t1].mapWins   -= s1;
                 stats[t1].mapLosses -= s2;
-                stats[t2].mapWins -= s2;
+                stats[t2].mapWins   -= s2;
                 stats[t2].mapLosses -= s1;
-                if (s1 > s2) {
-                    stats[t1].matchWins--;
-                    stats[t2].matchLosses--;
-                } else if (s2 > s1) {
-                    stats[t2].matchWins--;
-                    stats[t1].matchLosses--;
+                if (maps) {
+                    maps.forEach(m => {
+                        stats[t1].roundWins   -= m.r1;
+                        stats[t1].roundLosses -= m.r2;
+                        stats[t2].roundWins   -= m.r2;
+                        stats[t2].roundLosses -= m.r1;
+                    });
                 }
+                if (s1 > s2) { stats[t1].matchWins--; stats[t2].matchLosses--; }
+                else if (s2 > s1) { stats[t2].matchWins--; stats[t1].matchLosses--; }
             }
 
             function getAllCompletedMatches(played, pendingMatches) {
                 return [
-                    ...played.map((m) => ({ ...m })),
+                    ...played.map(m => ({ ...m })),
                     ...pendingMatches
-                        .filter((m) => m.s1 !== null && m.s2 !== null)
-                        .map((m) => ({ ...m })),
+                        .filter(m => m.s1 !== null && m.s2 !== null)
+                        .map(m => ({ ...m })),
                 ];
             }
 
+            // Computes head-to-head stats only among matches between teams in teamNames
             function getTieStats(teamNames, matches) {
                 const teamSet = new Set(teamNames);
                 let stats = {};
-                teamNames.forEach(
-                    (t) =>
-                        (stats[t] = {
-                            matchWins: 0,
-                            mapWins: 0,
-                            mapLosses: 0,
-                        }),
-                );
-
-                matches.forEach((m) => {
+                teamNames.forEach(t => stats[t] = {
+                    matchWins: 0, mapWins: 0, mapLosses: 0, roundWins: 0, roundLosses: 0
+                });
+                matches.forEach(m => {
                     if (!teamSet.has(m.t1) || !teamSet.has(m.t2)) return;
-                    stats[m.t1].mapWins += m.s1;
+                    stats[m.t1].mapWins   += m.s1;
                     stats[m.t1].mapLosses += m.s2;
-                    stats[m.t2].mapWins += m.s2;
+                    stats[m.t2].mapWins   += m.s2;
                     stats[m.t2].mapLosses += m.s1;
-                    if (m.s1 > m.s2) {
-                        stats[m.t1].matchWins++;
-                    } else if (m.s2 > m.s1) {
-                        stats[m.t2].matchWins++;
+                    if (m.maps) {
+                        m.maps.forEach(mp => {
+                            stats[m.t1].roundWins   += mp.r1;
+                            stats[m.t1].roundLosses += mp.r2;
+                            stats[m.t2].roundWins   += mp.r2;
+                            stats[m.t2].roundLosses += mp.r1;
+                        });
                     }
+                    if (m.s1 > m.s2) stats[m.t1].matchWins++;
+                    else if (m.s2 > m.s1) stats[m.t2].matchWins++;
                 });
-
-                teamNames.forEach((t) => {
-                    stats[t].mapDiff = stats[t].mapWins - stats[t].mapLosses;
+                teamNames.forEach(t => {
+                    stats[t].mapDiff   = stats[t].mapWins   - stats[t].mapLosses;
+                    stats[t].roundDiff = stats[t].roundWins - stats[t].roundLosses;
                 });
-
                 return stats;
             }
 
-            function resolveTieGroup(teamNames, matches, eventStats) {
+            /*
+             * Tiebreaker criteria (applied in order):
+             *   1. H2H match wins
+             *   2. H2H map differential
+             *   3. H2H round differential
+             *   4. Event-wide map differential
+             *   5. Event-wide round differential
+             *   6. Event-wide rounds won
+             *
+             * General rules:
+             *   - Any team(s) clearly ranked at top or bottom by a criterion confirm their
+             *     position and are removed; the remaining tied teams restart from criterion 1.
+             *   - For a subset, all tiers are grouped by value; each sub-group is resolved
+             *     recursively (restarting from criterion 1) with H2H stats recomputed for
+             *     the specific sub-group.
+             */
+            function resolveTieGroup(teamNames, allMatches, eventStats) {
                 if (teamNames.length <= 1) return teamNames.slice();
 
-                const headToHeadStats = getTieStats(teamNames, matches);
-
-                const criteria = [
-                    {
-                        getter: (team) => headToHeadStats[team].matchWins,
-                    },
-                    {
-                        getter: (team) => headToHeadStats[team].mapDiff,
-                    },
-                    {
-                        getter: (team) => eventStats[team].mapDiff,
-                    },
-                    {
-                        getter: (team) => eventStats[team].mapWins,
-                    },
+                // Each criterion factory receives the current subset and returns a getter fn
+                const criteriaFactories = [
+                    (subset) => { const s = getTieStats(subset, allMatches); return t => s[t].matchWins; },
+                    (subset) => { const s = getTieStats(subset, allMatches); return t => s[t].mapDiff; },
+                    (subset) => { const s = getTieStats(subset, allMatches); return t => s[t].roundDiff; },
+                    (_)      => t => eventStats[t].mapDiff,
+                    (_)      => t => eventStats[t].roundDiff,
+                    (_)      => t => eventStats[t].roundWins,
                 ];
 
                 function resolveSubset(subset) {
                     if (subset.length <= 1) return subset.slice();
 
-                    for (const criterion of criteria) {
-                        const values = subset.map((team) => criterion.getter(team));
-                        const firstValue = values[0];
-                        const allEqual = values.every((value) => value === firstValue);
-                        if (allEqual) continue;
+                    for (const factory of criteriaFactories) {
+                        const getter = factory(subset);
+                        const values = subset.map(getter);
+                        if (values.every(v => v === values[0])) continue; // all equal → next criterion
 
-                        const sorted = subset.slice().sort((a, b) => {
-                            const diff = criterion.getter(b) - criterion.getter(a);
-                            if (diff !== 0) return diff;
-                            return a.localeCompare(b);
+                        // Group teams by value, sort groups descending
+                        const valueMap = new Map();
+                        subset.forEach(t => {
+                            const v = getter(t);
+                            if (!valueMap.has(v)) valueMap.set(v, []);
+                            valueMap.get(v).push(t);
                         });
+                        const sortedValues = [...valueMap.keys()].sort((a, b) => b - a);
 
-                        const topValue = criterion.getter(sorted[0]);
-                        const topGroup = sorted.filter(
-                            (team) => criterion.getter(team) === topValue,
-                        );
-                        if (topGroup.length < sorted.length) {
-                            const remainder = sorted.filter(
-                                (team) => !topGroup.includes(team),
-                            );
-                            return [...topGroup, ...resolveSubset(remainder)];
-                        }
-
-                        const bottomValue = criterion.getter(
-                            sorted[sorted.length - 1],
-                        );
-                        const bottomGroup = sorted.filter(
-                            (team) => criterion.getter(team) === bottomValue,
-                        );
-                        if (bottomGroup.length < sorted.length) {
-                            const remainder = sorted.filter(
-                                (team) => !bottomGroup.includes(team),
-                            );
-                            return [...resolveSubset(remainder), ...bottomGroup];
-                        }
+                        // Each group: if size 1 → confirmed; if size > 1 → restart from criterion 1
+                        return sortedValues.flatMap(v => {
+                            const group = valueMap.get(v);
+                            return group.length === 1 ? group : resolveSubset(group);
+                        });
                     }
 
+                    // All criteria exhausted → alphabetical
                     return subset.slice().sort();
                 }
 
@@ -616,20 +401,19 @@
 
             function sortStandings(statsArray, matches) {
                 const eventStats = {};
-                statsArray.forEach((team) => {
+                statsArray.forEach(team => {
                     eventStats[team.name] = {
-                        mapDiff: team.mapWins - team.mapLosses,
-                        mapWins: team.mapWins,
+                        mapDiff:   team.mapWins   - team.mapLosses,
+                        mapWins:   team.mapWins,
+                        roundDiff: team.roundWins - team.roundLosses,
+                        roundWins: team.roundWins,
                     };
                 });
 
-                const byWins = statsArray
-                    .slice()
-                    .sort((a, b) => {
-                        if (b.matchWins !== a.matchWins)
-                            return b.matchWins - a.matchWins;
-                        return a.name.localeCompare(b.name);
-                    });
+                const byWins = statsArray.slice().sort((a, b) => {
+                    if (b.matchWins !== a.matchWins) return b.matchWins - a.matchWins;
+                    return a.name.localeCompare(b.name);
+                });
 
                 let ordered = [];
                 let tieBlock = [byWins[0]];
@@ -639,14 +423,8 @@
                         tieBlock.push(byWins[i]);
                     } else {
                         if (tieBlock.length > 1) {
-                            const resolved = resolveTieGroup(
-                                tieBlock.map((team) => team.name),
-                                matches,
-                                eventStats,
-                            );
-                            tieBlock = resolved.map((name) =>
-                                byWins.find((team) => team.name === name),
-                            );
+                            const resolved = resolveTieGroup(tieBlock.map(t => t.name), matches, eventStats);
+                            tieBlock = resolved.map(name => byWins.find(t => t.name === name));
                         }
                         ordered.push(...tieBlock);
                         tieBlock = [byWins[i]];
@@ -654,154 +432,94 @@
                 }
 
                 if (tieBlock.length > 1) {
-                    const resolved = resolveTieGroup(
-                        tieBlock.map((team) => team.name),
-                        matches,
-                        eventStats,
-                    );
-                    tieBlock = resolved.map((name) =>
-                        byWins.find((team) => team.name === name),
-                    );
+                    const resolved = resolveTieGroup(tieBlock.map(t => t.name), matches, eventStats);
+                    tieBlock = resolved.map(name => byWins.find(t => t.name === name));
                 }
-
                 ordered.push(...tieBlock);
                 return ordered;
             }
 
             function calculateCurrentStandings(teams, played, pendingMatches) {
                 let stats = getBaseStats(teams);
-                played.forEach((m) =>
-                    applyMatch(stats, m.t1, m.t2, m.s1, m.s2),
-                );
-                pendingMatches.forEach((m) => {
+                played.forEach(m => applyMatch(stats, m.t1, m.t2, m.s1, m.s2, m.maps));
+                pendingMatches.forEach(m => {
                     if (m.s1 !== null && m.s2 !== null)
-                        applyMatch(stats, m.t1, m.t2, m.s1, m.s2);
+                        applyMatch(stats, m.t1, m.t2, m.s1, m.s2, m.maps);
                 });
-
                 const allMatches = getAllCompletedMatches(played, pendingMatches);
                 return sortStandings(Object.values(stats), allMatches);
             }
 
             function simulateProbabilities(teams, played, pendingMatches) {
                 let stats = getBaseStats(teams);
-                played.forEach((m) =>
-                    applyMatch(stats, m.t1, m.t2, m.s1, m.s2),
-                );
+                played.forEach(m => applyMatch(stats, m.t1, m.t2, m.s1, m.s2, m.maps));
 
-                let fixedRemaining = pendingMatches.filter(
-                    (m) => m.s1 !== null && m.s2 !== null,
-                );
-                let pending = pendingMatches.filter(
-                    (m) => m.s1 === null && m.s2 === null,
-                );
-                const baseMatches = getAllCompletedMatches(played, fixedRemaining);
+                const fixedRemaining = pendingMatches.filter(m => m.s1 !== null && m.s2 !== null);
+                const pending        = pendingMatches.filter(m => m.s1 === null  && m.s2 === null);
+                const baseMatches    = getAllCompletedMatches(played, fixedRemaining);
 
-                fixedRemaining.forEach((m) =>
-                    applyMatch(stats, m.t1, m.t2, m.s1, m.s2),
-                );
+                fixedRemaining.forEach(m => applyMatch(stats, m.t1, m.t2, m.s1, m.s2, m.maps));
 
                 let placementCounts = {};
-                teams.forEach(
-                    (t) =>
-                        (placementCounts[t] = {
-                            first: 0,
-                            upper: 0,
-                            lower: 0,
-                            out: 0,
-                        }),
-                );
+                teams.forEach(t => placementCounts[t] = { first:0, upper:0, lower:0, out:0 });
 
+                // Simulation uses 13-0 per map for all future matches
                 const outcomes = [
-                    [2, 0],
-                    [2, 1],
-                    [1, 2],
-                    [0, 2],
+                    { s1:2, s2:0 },
+                    { s1:2, s2:1 },
+                    { s1:1, s2:2 },
+                    { s1:0, s2:2 },
                 ];
                 let totalPermutations = 0;
 
                 function backtrack(index, currentMatches) {
                     if (index === pending.length) {
                         totalPermutations++;
-                        let currentStandings = sortStandings(
-                            Object.values(stats),
-                            currentMatches,
-                        );
-
-                        placementCounts[currentStandings[0].name].first++;
-                        placementCounts[currentStandings[1].name].upper++;
-                        placementCounts[currentStandings[2].name].upper++;
-                        placementCounts[currentStandings[3].name].lower++;
-                        placementCounts[currentStandings[4].name].out++;
-                        placementCounts[currentStandings[5].name].out++;
+                        const standings = sortStandings(Object.values(stats), currentMatches);
+                        placementCounts[standings[0].name].first++;
+                        placementCounts[standings[1].name].upper++;
+                        placementCounts[standings[2].name].upper++;
+                        placementCounts[standings[3].name].lower++;
+                        placementCounts[standings[4].name].out++;
+                        placementCounts[standings[5].name].out++;
                         return;
                     }
-
-                    let match = pending[index];
-                    for (let i = 0; i < outcomes.length; i++) {
-                        let [s1, s2] = outcomes[i];
-                        applyMatch(stats, match.t1, match.t2, s1, s2);
-                        currentMatches.push({
-                            t1: match.t1,
-                            t2: match.t2,
-                            s1,
-                            s2,
-                        });
+                    const match = pending[index];
+                    for (const { s1, s2 } of outcomes) {
+                        const maps = generateDefaultMaps(s1, s2);
+                        applyMatch(stats, match.t1, match.t2, s1, s2, maps);
+                        currentMatches.push({ t1: match.t1, t2: match.t2, s1, s2, maps });
                         backtrack(index + 1, currentMatches);
                         currentMatches.pop();
-                        removeMatch(stats, match.t1, match.t2, s1, s2);
+                        removeMatch(stats, match.t1, match.t2, s1, s2, maps);
                     }
                 }
 
-                if (pending.length > 0) backtrack(0, baseMatches);
-                else {
+                if (pending.length > 0) {
+                    backtrack(0, baseMatches);
+                } else {
                     totalPermutations = 1;
-                    let currentStandings = sortStandings(
-                        Object.values(stats),
-                        baseMatches,
-                    );
-                    placementCounts[currentStandings[0].name].first++;
-                    placementCounts[currentStandings[1].name].upper++;
-                    placementCounts[currentStandings[2].name].upper++;
-                    placementCounts[currentStandings[3].name].lower++;
-                    placementCounts[currentStandings[4].name].out++;
-                    placementCounts[currentStandings[5].name].out++;
+                    const standings = sortStandings(Object.values(stats), baseMatches);
+                    placementCounts[standings[0].name].first++;
+                    placementCounts[standings[1].name].upper++;
+                    placementCounts[standings[2].name].upper++;
+                    placementCounts[standings[3].name].lower++;
+                    placementCounts[standings[4].name].out++;
+                    placementCounts[standings[5].name].out++;
                 }
 
                 let results = {};
-                teams.forEach((t) => {
+                teams.forEach(t => {
+                    const make = (cnt) => ({
+                        percent: ((cnt / totalPermutations) * 100).toFixed(1),
+                        count: cnt,
+                        total: totalPermutations,
+                    });
                     results[t] = {
-                        first: {
-                            percent: (
-                                (placementCounts[t].first / totalPermutations) *
-                                100
-                            ).toFixed(1),
-                            count: placementCounts[t].first,
-                            total: totalPermutations,
-                        },
-                        upper: {
-                            percent: (
-                                (placementCounts[t].upper / totalPermutations) *
-                                100
-                            ).toFixed(1),
-                            count: placementCounts[t].upper,
-                            total: totalPermutations,
-                        },
-                        lower: {
-                            percent: (
-                                (placementCounts[t].lower / totalPermutations) *
-                                100
-                            ).toFixed(1),
-                            count: placementCounts[t].lower,
-                            total: totalPermutations,
-                        },
-                        out: {
-                            percent: (
-                                (placementCounts[t].out / totalPermutations) *
-                                100
-                            ).toFixed(1),
-                            count: placementCounts[t].out,
-                            total: totalPermutations,
-                        },
+                        first: make(placementCounts[t].first),
+                        upper: make(placementCounts[t].upper),
+                        lower: make(placementCounts[t].lower),
+                        out:   make(placementCounts[t].out),
                     };
                 });
                 return results;
@@ -811,20 +529,11 @@
                 const btn = document.getElementById(`btn-${group}`);
                 btn.innerText = "Calculando...";
                 btn.disabled = true;
-
                 setTimeout(() => {
                     if (group === "alpha") {
-                        probabilitiesCache.alpha = simulateProbabilities(
-                            alphaTeams,
-                            alphaPlayed,
-                            alphaRemaining,
-                        );
+                        probabilitiesCache.alpha = simulateProbabilities(alphaTeams, alphaPlayed, alphaRemaining);
                     } else {
-                        probabilitiesCache.omega = simulateProbabilities(
-                            omegaTeams,
-                            omegaPlayed,
-                            omegaRemaining,
-                        );
+                        probabilitiesCache.omega = simulateProbabilities(omegaTeams, omegaPlayed, omegaRemaining);
                     }
                     renderTables();
                     btn.innerText = "Calcular Probabilidades";
@@ -834,20 +543,23 @@
 
             function formatProb(value) {
                 if (!value) return "-";
-
                 const percent = parseFloat(value.percent ?? value);
-                const count = value.count ?? null;
-                const total = value.total ?? null;
-
+                const count   = value.count ?? null;
+                const total   = value.total ?? null;
                 let cls = "prob-zero";
-                if (percent > 60) cls = "prob-high";
+                if (percent > 60)     cls = "prob-high";
                 else if (percent > 20) cls = "prob-med";
-                else if (percent > 0) cls = "prob-low";
-
+                else if (percent > 0)  cls = "prob-low";
                 if (count !== null && total !== null) {
                     return `<span class="prob-cell ${cls}">${percent}%<span class="prob-count">${count}/${total}</span></span>`;
                 }
                 return `<span class="prob-cell ${cls}">${percent}%</span>`;
+            }
+
+            function formatRoundDiff(diff) {
+                if (diff > 0) return `<span class="round-diff-pos">+${diff}</span>`;
+                if (diff < 0) return `<span class="round-diff-neg">${diff}</span>`;
+                return `<span class="round-diff-zero">0</span>`;
             }
 
             function drawTable(tableId, standings, probs) {
@@ -855,7 +567,6 @@
                 tbody.innerHTML = "";
                 standings.forEach((team, index) => {
                     const tr = document.createElement("tr");
-
                     let rankClass = "";
                     if (index === 0) rankClass = "rank-1";
                     else if (index === 1 || index === 2) rankClass = "rank-2";
@@ -863,98 +574,76 @@
                     if (rankClass) tr.classList.add(rankClass);
 
                     const isKru = team.name === "KRÜ Esports";
-                    let p = probs ? probs[team.name] : null;
+                    const p = probs ? probs[team.name] : null;
+                    const roundDiff = team.roundWins - team.roundLosses;
 
-                    // Añadimos de nuevo la columna de Mapas: ${team.mapWins} - ${team.mapLosses}
                     tr.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td class="team-name ${isKru ? "kru-highlight" : ""}">${team.name}</td>
-                    <td><b>${team.matchWins} - ${team.matchLosses}</b></td>
-                    <td>${team.mapWins} - ${team.mapLosses}</td>
-                    <td>${formatProb(p?.first)}</td>
-                    <td>${formatProb(p?.upper)}</td>
-                    <td>${formatProb(p?.lower)}</td>
-                    <td>${formatProb(p?.out)}</td>
-                `;
+                        <td>${index + 1}</td>
+                        <td class="team-name ${isKru ? "kru-highlight" : ""}">${team.name}</td>
+                        <td><b>${team.matchWins} - ${team.matchLosses}</b></td>
+                        <td>${team.mapWins} - ${team.mapLosses}</td>
+                        <td>${formatRoundDiff(roundDiff)}</td>
+                        <td>${formatProb(p?.first)}</td>
+                        <td>${formatProb(p?.upper)}</td>
+                        <td>${formatProb(p?.lower)}</td>
+                        <td>${formatProb(p?.out)}</td>
+                    `;
                     tbody.appendChild(tr);
                 });
             }
 
             function renderTables() {
-                const alphaStandings = calculateCurrentStandings(
-                    alphaTeams,
-                    alphaPlayed,
-                    alphaRemaining,
-                );
-                const omegaStandings = calculateCurrentStandings(
-                    omegaTeams,
-                    omegaPlayed,
-                    omegaRemaining,
-                );
-
-                drawTable(
-                    "alpha-table",
-                    alphaStandings,
-                    probabilitiesCache.alpha,
-                );
-                drawTable(
-                    "omega-table",
-                    omegaStandings,
-                    probabilitiesCache.omega,
-                );
+                const alphaStandings = calculateCurrentStandings(alphaTeams, alphaPlayed, alphaRemaining);
+                const omegaStandings = calculateCurrentStandings(omegaTeams, omegaPlayed, omegaRemaining);
+                drawTable("alpha-table", alphaStandings, probabilitiesCache.alpha);
+                drawTable("omega-table", omegaStandings, probabilitiesCache.omega);
             }
 
             function renderGroupMatches(containerId, matches, groupName) {
                 const container = document.getElementById(containerId);
                 container.innerHTML = "";
 
-                matches.forEach((match) => {
+                matches.forEach(match => {
                     const div = document.createElement("div");
                     div.className = "match-row";
 
-                    let teamsHtml =
-                        match.t1 === "KRÜ Esports" || match.t2 === "KRÜ Esports"
-                            ? match.t1.replace(
-                                  "KRÜ Esports",
-                                  "<span class='kru-highlight'>KRÜ Esports</span>",
-                              ) +
-                              " vs " +
-                              match.t2.replace(
-                                  "KRÜ Esports",
-                                  "<span class='kru-highlight'>KRÜ Esports</span>",
-                              )
-                            : `${match.t1} vs ${match.t2}`;
+                    const teamsHtml = [match.t1, match.t2]
+                        .map(n => n === "KRÜ Esports"
+                            ? `<span class='kru-highlight'>KRÜ Esports</span>`
+                            : n)
+                        .join(" vs ");
 
                     const infoDiv = document.createElement("div");
                     infoDiv.className = "match-info";
                     infoDiv.innerHTML = `
-                    <div class="match-date">${match.date}</div>
-                    <div class="match-teams">${teamsHtml}</div>
-                `;
+                        <div class="match-date">${match.date}</div>
+                        <div class="match-teams">${teamsHtml}</div>
+                    `;
 
                     const select = document.createElement("select");
-                    select.innerHTML = `<option value="">Pendiente</option>
-                                    <option value="2-0">2 - 0 (${match.t1})</option>
-                                    <option value="2-1">2 - 1 (${match.t1})</option>
-                                    <option value="1-2">1 - 2 (${match.t2})</option>
-                                    <option value="0-2">0 - 2 (${match.t2})</option>`;
+                    select.innerHTML = `
+                        <option value="">Pendiente</option>
+                        <option value="2-0">2 - 0 (${match.t1})</option>
+                        <option value="2-1">2 - 1 (${match.t1})</option>
+                        <option value="1-2">1 - 2 (${match.t2})</option>
+                        <option value="0-2">0 - 2 (${match.t2})</option>
+                    `;
 
                     select.addEventListener("change", (e) => {
                         const val = e.target.value;
                         if (val) {
-                            const scores = val.split("-");
-                            match.s1 = parseInt(scores[0]);
-                            match.s2 = parseInt(scores[1]);
+                            const [s1str, s2str] = val.split("-");
+                            const s1 = parseInt(s1str), s2 = parseInt(s2str);
+                            match.s1   = s1;
+                            match.s2   = s2;
+                            match.maps = generateDefaultMaps(s1, s2);
                         } else {
-                            match.s1 = null;
-                            match.s2 = null;
+                            match.s1   = null;
+                            match.s2   = null;
+                            match.maps = null;
                         }
-
-                        if (groupName === "alpha")
-                            probabilitiesCache.alpha = null;
-                        if (groupName === "omega")
-                            probabilitiesCache.omega = null;
-
+                        if (groupName === "alpha") probabilitiesCache.alpha = null;
+                        if (groupName === "omega") probabilitiesCache.omega = null;
                         renderTables();
                     });
 
@@ -964,7 +653,6 @@
                 });
             }
 
-            // Inicialización
             renderGroupMatches("alpha-matches", alphaRemaining, "alpha");
             renderGroupMatches("omega-matches", omegaRemaining, "omega");
             renderTables();
