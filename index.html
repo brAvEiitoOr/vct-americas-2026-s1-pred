@@ -122,6 +122,14 @@
             .prob-cell {
                 font-family: monospace;
                 font-size: 1.1em;
+                line-height: 1.2;
+            }
+            .prob-count {
+                display: block;
+                margin-top: 4px;
+                font-size: 0.75em;
+                color: #a4a9ad;
+                font-weight: normal;
             }
             .prob-high {
                 color: var(--accent-cyan);
@@ -605,22 +613,38 @@
                 let results = {};
                 teams.forEach((t) => {
                     results[t] = {
-                        first: (
-                            (placementCounts[t].first / totalPermutations) *
-                            100
-                        ).toFixed(1),
-                        upper: (
-                            (placementCounts[t].upper / totalPermutations) *
-                            100
-                        ).toFixed(1),
-                        lower: (
-                            (placementCounts[t].lower / totalPermutations) *
-                            100
-                        ).toFixed(1),
-                        out: (
-                            (placementCounts[t].out / totalPermutations) *
-                            100
-                        ).toFixed(1),
+                        first: {
+                            percent: (
+                                (placementCounts[t].first / totalPermutations) *
+                                100
+                            ).toFixed(1),
+                            count: placementCounts[t].first,
+                            total: totalPermutations,
+                        },
+                        upper: {
+                            percent: (
+                                (placementCounts[t].upper / totalPermutations) *
+                                100
+                            ).toFixed(1),
+                            count: placementCounts[t].upper,
+                            total: totalPermutations,
+                        },
+                        lower: {
+                            percent: (
+                                (placementCounts[t].lower / totalPermutations) *
+                                100
+                            ).toFixed(1),
+                            count: placementCounts[t].lower,
+                            total: totalPermutations,
+                        },
+                        out: {
+                            percent: (
+                                (placementCounts[t].out / totalPermutations) *
+                                100
+                            ).toFixed(1),
+                            count: placementCounts[t].out,
+                            total: totalPermutations,
+                        },
                     };
                 });
                 return results;
@@ -653,12 +677,20 @@
 
             function formatProb(value) {
                 if (!value) return "-";
-                const num = parseFloat(value);
+
+                const percent = parseFloat(value.percent ?? value);
+                const count = value.count ?? null;
+                const total = value.total ?? null;
+
                 let cls = "prob-zero";
-                if (num > 60) cls = "prob-high";
-                else if (num > 20) cls = "prob-med";
-                else if (num > 0) cls = "prob-low";
-                return `<span class="prob-cell ${cls}">${num}%</span>`;
+                if (percent > 60) cls = "prob-high";
+                else if (percent > 20) cls = "prob-med";
+                else if (percent > 0) cls = "prob-low";
+
+                if (count !== null && total !== null) {
+                    return `<span class="prob-cell ${cls}">${percent}%<span class="prob-count">${count}/${total}</span></span>`;
+                }
+                return `<span class="prob-cell ${cls}">${percent}%</span>`;
             }
 
             function drawTable(tableId, standings, probs) {
