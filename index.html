@@ -507,16 +507,165 @@
                 }
             }
 
-            function sortStandings(statsArray) {
-                return statsArray.sort((a, b) => {
-                    if (b.matchWins !== a.matchWins)
-                        return b.matchWins - a.matchWins;
-                    const aMapDiff = a.mapWins - a.mapLosses;
-                    const bMapDiff = b.mapWins - b.mapLosses;
-                    if (bMapDiff !== aMapDiff) return bMapDiff - aMapDiff;
-                    if (b.mapWins !== a.mapWins) return b.mapWins - a.mapWins;
-                    return a.name.localeCompare(b.name);
+            function getAllCompletedMatches(played, pendingMatches) {
+                return [
+                    ...played.map((m) => ({ ...m })),
+                    ...pendingMatches
+                        .filter((m) => m.s1 !== null && m.s2 !== null)
+                        .map((m) => ({ ...m })),
+                ];
+            }
+
+            function getTieStats(teamNames, matches) {
+                const teamSet = new Set(teamNames);
+                let stats = {};
+                teamNames.forEach(
+                    (t) =>
+                        (stats[t] = {
+                            matchWins: 0,
+                            mapWins: 0,
+                            mapLosses: 0,
+                        }),
+                );
+
+                matches.forEach((m) => {
+                    if (!teamSet.has(m.t1) || !teamSet.has(m.t2)) return;
+                    stats[m.t1].mapWins += m.s1;
+                    stats[m.t1].mapLosses += m.s2;
+                    stats[m.t2].mapWins += m.s2;
+                    stats[m.t2].mapLosses += m.s1;
+                    if (m.s1 > m.s2) {
+                        stats[m.t1].matchWins++;
+                    } else if (m.s2 > m.s1) {
+                        stats[m.t2].matchWins++;
+                    }
                 });
+
+                teamNames.forEach((t) => {
+                    stats[t].mapDiff = stats[t].mapWins - stats[t].mapLosses;
+                });
+
+                return stats;
+            }
+
+            function resolveTieGroup(teamNames, matches, eventStats) {
+                if (teamNames.length <= 1) return teamNames.slice();
+
+                const headToHeadStats = getTieStats(teamNames, matches);
+
+                const criteria = [
+                    {
+                        getter: (team) => headToHeadStats[team].matchWins,
+                    },
+                    {
+                        getter: (team) => headToHeadStats[team].mapDiff,
+                    },
+                    {
+                        getter: (team) => eventStats[team].mapDiff,
+                    },
+                    {
+                        getter: (team) => eventStats[team].mapWins,
+                    },
+                ];
+
+                function resolveSubset(subset) {
+                    if (subset.length <= 1) return subset.slice();
+
+                    for (const criterion of criteria) {
+                        const values = subset.map((team) => criterion.getter(team));
+                        const firstValue = values[0];
+                        const allEqual = values.every((value) => value === firstValue);
+                        if (allEqual) continue;
+
+                        const sorted = subset.slice().sort((a, b) => {
+                            const diff = criterion.getter(b) - criterion.getter(a);
+                            if (diff !== 0) return diff;
+                            return a.localeCompare(b);
+                        });
+
+                        const topValue = criterion.getter(sorted[0]);
+                        const topGroup = sorted.filter(
+                            (team) => criterion.getter(team) === topValue,
+                        );
+                        if (topGroup.length < sorted.length) {
+                            const remainder = sorted.filter(
+                                (team) => !topGroup.includes(team),
+                            );
+                            return [...topGroup, ...resolveSubset(remainder)];
+                        }
+
+                        const bottomValue = criterion.getter(
+                            sorted[sorted.length - 1],
+                        );
+                        const bottomGroup = sorted.filter(
+                            (team) => criterion.getter(team) === bottomValue,
+                        );
+                        if (bottomGroup.length < sorted.length) {
+                            const remainder = sorted.filter(
+                                (team) => !bottomGroup.includes(team),
+                            );
+                            return [...resolveSubset(remainder), ...bottomGroup];
+                        }
+                    }
+
+                    return subset.slice().sort();
+                }
+
+                return resolveSubset(teamNames);
+            }
+
+            function sortStandings(statsArray, matches) {
+                const eventStats = {};
+                statsArray.forEach((team) => {
+                    eventStats[team.name] = {
+                        mapDiff: team.mapWins - team.mapLosses,
+                        mapWins: team.mapWins,
+                    };
+                });
+
+                const byWins = statsArray
+                    .slice()
+                    .sort((a, b) => {
+                        if (b.matchWins !== a.matchWins)
+                            return b.matchWins - a.matchWins;
+                        return a.name.localeCompare(b.name);
+                    });
+
+                let ordered = [];
+                let tieBlock = [byWins[0]];
+
+                for (let i = 1; i < byWins.length; i++) {
+                    if (byWins[i].matchWins === tieBlock[0].matchWins) {
+                        tieBlock.push(byWins[i]);
+                    } else {
+                        if (tieBlock.length > 1) {
+                            const resolved = resolveTieGroup(
+                                tieBlock.map((team) => team.name),
+                                matches,
+                                eventStats,
+                            );
+                            tieBlock = resolved.map((name) =>
+                                byWins.find((team) => team.name === name),
+                            );
+                        }
+                        ordered.push(...tieBlock);
+                        tieBlock = [byWins[i]];
+                    }
+                }
+
+                if (tieBlock.length > 1) {
+                    const resolved = resolveTieGroup(
+                        tieBlock.map((team) => team.name),
+                        matches,
+                        eventStats,
+                    );
+                    tieBlock = resolved.map((name) =>
+                        byWins.find((team) => team.name === name),
+                    );
+                }
+
+                ordered.push(...tieBlock);
+                return ordered;
             }
 
             function calculateCurrentStandings(teams, played, pendingMatches) {
@@ -528,7 +677,9 @@
                     if (m.s1 !== null && m.s2 !== null)
                         applyMatch(stats, m.t1, m.t2, m.s1, m.s2);
                 });
-                return sortStandings(Object.values(stats));
+
+                const allMatches = getAllCompletedMatches(played, pendingMatches);
+                return sortStandings(Object.values(stats), allMatches);
             }
 
             function simulateProbabilities(teams, played, pendingMatches) {
@@ -543,6 +694,7 @@
                 let pending = pendingMatches.filter(
                     (m) => m.s1 === null && m.s2 === null,
                 );
+                const baseMatches = getAllCompletedMatches(played, fixedRemaining);
 
                 fixedRemaining.forEach((m) =>
                     applyMatch(stats, m.t1, m.t2, m.s1, m.s2),
@@ -567,11 +719,12 @@
                 ];
                 let totalPermutations = 0;
 
-                function backtrack(index) {
+                function backtrack(index, currentMatches) {
                     if (index === pending.length) {
                         totalPermutations++;
                         let currentStandings = sortStandings(
                             Object.values(stats),
+                            currentMatches,
                         );
 
                         placementCounts[currentStandings[0].name].first++;
@@ -587,15 +740,25 @@
                     for (let i = 0; i < outcomes.length; i++) {
                         let [s1, s2] = outcomes[i];
                         applyMatch(stats, match.t1, match.t2, s1, s2);
-                        backtrack(index + 1);
+                        currentMatches.push({
+                            t1: match.t1,
+                            t2: match.t2,
+                            s1,
+                            s2,
+                        });
+                        backtrack(index + 1, currentMatches);
+                        currentMatches.pop();
                         removeMatch(stats, match.t1, match.t2, s1, s2);
                     }
                 }
 
-                if (pending.length > 0) backtrack(0);
+                if (pending.length > 0) backtrack(0, baseMatches);
                 else {
                     totalPermutations = 1;
-                    let currentStandings = sortStandings(Object.values(stats));
+                    let currentStandings = sortStandings(
+                        Object.values(stats),
+                        baseMatches,
+                    );
                     placementCounts[currentStandings[0].name].first++;
                     placementCounts[currentStandings[1].name].upper++;
                     placementCounts[currentStandings[2].name].upper++;
