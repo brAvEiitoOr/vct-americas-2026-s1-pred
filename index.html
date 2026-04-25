@@ -70,11 +70,16 @@
             }
             .calc-btn:hover { background-color: #d6006b; transform: scale(1.05); }
             .calc-btn:disabled { background-color: #555; cursor: not-allowed; transform: none; }
+            .table-scroll {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                margin-bottom: 30px;
+            }
             table {
                 width: 100%;
                 border-collapse: collapse;
                 font-size: 0.9em;
-                margin-bottom: 30px;
+                min-width: 560px;
             }
             th, td {
                 padding: 10px 5px;
@@ -147,6 +152,7 @@
                     <h2>Grupo Alpha</h2>
                     <button class="calc-btn" id="btn-alpha" onclick="runProbabilities('alpha')">Calcular Probabilidades</button>
                 </div>
+                <div class="table-scroll">
                 <table id="alpha-table">
                     <thead>
                         <tr>
@@ -163,6 +169,7 @@
                     </thead>
                     <tbody></tbody>
                 </table>
+                </div>
                 <div class="matches-container">
                     <h3>Encuentros Restantes (Alpha)</h3>
                     <div id="alpha-matches" class="matches-list"></div>
@@ -174,6 +181,7 @@
                     <h2>Grupo Omega</h2>
                     <button class="calc-btn" id="btn-omega" onclick="runProbabilities('omega')">Calcular Probabilidades</button>
                 </div>
+                <div class="table-scroll">
                 <table id="omega-table">
                     <thead>
                         <tr>
@@ -190,6 +198,7 @@
                     </thead>
                     <tbody></tbody>
                 </table>
+                </div>
                 <div class="matches-container">
                     <h3>Encuentros Restantes (Omega)</h3>
                     <div id="omega-matches" class="matches-list"></div>
