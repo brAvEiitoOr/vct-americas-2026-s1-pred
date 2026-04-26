@@ -139,7 +139,6 @@
                 cursor: pointer;
                 font-weight: bold;
             }
-            .kru-highlight { color: var(--accent-pink); text-shadow: 0 0 5px rgba(255, 0, 127, 0.4); }
         </style>
     </head>
     <body>
@@ -584,13 +583,12 @@
                     else if (index === 3) rankClass = "rank-4";
                     if (rankClass) tr.classList.add(rankClass);
 
-                    const isKru = team.name === "KRÜ Esports";
                     const p = probs ? probs[team.name] : null;
                     const roundDiff = team.roundWins - team.roundLosses;
 
                     tr.innerHTML = `
                         <td>${index + 1}</td>
-                        <td class="team-name ${isKru ? "kru-highlight" : ""}">${team.name}</td>
+                        <td class="team-name">${team.name}</td>
                         <td><b>${team.matchWins} - ${team.matchLosses}</b></td>
                         <td>${team.mapWins} - ${team.mapLosses}</td>
                         <td>${formatRoundDiff(roundDiff)}</td>
