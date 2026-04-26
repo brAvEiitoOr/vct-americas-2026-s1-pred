@@ -619,9 +619,6 @@
                     div.className = "match-row";
 
                     const teamsHtml = [match.t1, match.t2]
-                        .map(n => n === "KRÜ Esports"
-                            ? `<span class='kru-highlight'>KRÜ Esports</span>`
-                            : n)
                         .join(" vs ");
 
                     const infoDiv = document.createElement("div");
