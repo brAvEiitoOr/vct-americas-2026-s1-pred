@@ -139,6 +139,94 @@
                 cursor: pointer;
                 font-weight: bold;
             }
+            .h2h-btn {
+                background-color: transparent;
+                color: var(--accent-cyan);
+                border: 1px solid var(--accent-cyan);
+                padding: 8px 15px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-weight: bold;
+                transition: all 0.2s ease;
+                margin-left: 8px;
+            }
+            .h2h-btn:hover { background-color: rgba(0,255,150,0.1); transform: scale(1.05); }
+            .h2h-btn:disabled { color: #555; border-color: #555; cursor: not-allowed; transform: none; }
+            .modal-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.75);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+            }
+            .modal-box {
+                background: var(--card-bg);
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                padding: 24px;
+                max-width: 620px;
+                width: 90%;
+                max-height: 80vh;
+                overflow-y: auto;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            }
+            .modal-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+                border-bottom: 2px solid var(--border-color);
+                padding-bottom: 10px;
+            }
+            .modal-header span {
+                font-size: 1.1em;
+                font-weight: bold;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                color: var(--accent-pink);
+            }
+            .modal-close {
+                background: none;
+                border: none;
+                color: var(--text-color);
+                font-size: 1.3em;
+                cursor: pointer;
+                padding: 4px 8px;
+                border-radius: 4px;
+                line-height: 1;
+            }
+            .modal-close:hover { background: rgba(255,255,255,0.1); }
+            .h2h-group { margin-bottom: 24px; }
+            .h2h-group:last-child { margin-bottom: 0; }
+            .h2h-group h4 {
+                color: var(--accent-cyan);
+                margin: 0 0 10px 0;
+                font-size: 0.85em;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            .h2h-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 0.88em;
+            }
+            .h2h-table th, .h2h-table td {
+                padding: 8px 10px;
+                border-bottom: 1px solid var(--border-color);
+                text-align: center;
+            }
+            .h2h-table th {
+                background: rgba(255,255,255,0.03);
+                font-size: 0.75em;
+                color: #8b978f;
+                text-transform: uppercase;
+            }
+            .h2h-table td:first-child { text-align: left; font-weight: bold; }
+            .h2h-winner { color: var(--accent-cyan); }
+            .h2h-loser  { color: #e74c3c; }
+            .h2h-neutral{ color: #8b978f; }
         </style>
     </head>
     <body>
@@ -150,7 +238,10 @@
             <div class="group-section">
                 <div class="group-header">
                     <h2>Grupo Alpha</h2>
-                    <button class="calc-btn" id="btn-alpha" onclick="runProbabilities('alpha')">Calcular Probabilidades</button>
+                    <div>
+                        <button class="h2h-btn" id="btn-h2h-alpha" onclick="openH2HModal('alpha')" disabled>Ver H2H</button>
+                        <button class="calc-btn" id="btn-alpha" onclick="runProbabilities('alpha')">Calcular Probabilidades</button>
+                    </div>
                 </div>
                 <div class="table-scroll">
                 <table id="alpha-table">
@@ -180,7 +271,10 @@
             <div class="group-section">
                 <div class="group-header">
                     <h2>Grupo Omega</h2>
-                    <button class="calc-btn" id="btn-omega" onclick="runProbabilities('omega')">Calcular Probabilidades</button>
+                    <div>
+                        <button class="h2h-btn" id="btn-h2h-omega" onclick="openH2HModal('omega')" disabled>Ver H2H</button>
+                        <button class="calc-btn" id="btn-omega" onclick="runProbabilities('omega')">Calcular Probabilidades</button>
+                    </div>
                 </div>
                 <div class="table-scroll">
                 <table id="omega-table">
@@ -256,6 +350,7 @@
             ];
 
             let probabilitiesCache = { alpha: null, omega: null };
+            let currentStandings = { alpha: null, omega: null };
 
             // Generates default 13-0 per map for a given match score
             function generateDefaultMaps(s1, s2) {
@@ -605,11 +700,91 @@
                 });
             }
 
+            function getActiveTies(standings) {
+                const groups = [];
+                let i = 0;
+                while (i < standings.length) {
+                    let j = i + 1;
+                    while (j < standings.length && standings[j].matchWins === standings[i].matchWins) j++;
+                    if (j - i > 1) groups.push(standings.slice(i, j).map(t => t.name));
+                    i = j;
+                }
+                return groups;
+            }
+
+            function openH2HModal(group) {
+                const standings = currentStandings[group];
+                if (!standings) return;
+                const played    = group === 'alpha' ? alphaPlayed    : omegaPlayed;
+                const remaining = group === 'alpha' ? alphaRemaining : omegaRemaining;
+                const allMatches = getAllCompletedMatches(played, remaining);
+                const ties = getActiveTies(standings);
+                if (ties.length === 0) return;
+
+                document.getElementById('modal-title').textContent =
+                    `Desempate H2H — Grupo ${group === 'alpha' ? 'Alpha' : 'Omega'}`;
+
+                let html = '';
+                ties.forEach(tieGroup => {
+                    const h2h = getTieStats(tieGroup, allMatches);
+                    const sorted = [...tieGroup].sort((a, b) => {
+                        if (h2h[b].matchWins !== h2h[a].matchWins) return h2h[b].matchWins - h2h[a].matchWins;
+                        if (h2h[b].mapDiff   !== h2h[a].mapDiff)   return h2h[b].mapDiff   - h2h[a].mapDiff;
+                        return h2h[b].roundDiff - h2h[a].roundDiff;
+                    });
+                    const maxWins = Math.max(...sorted.map(t => h2h[t].matchWins));
+                    const minWins = Math.min(...sorted.map(t => h2h[t].matchWins));
+
+                    html += `<div class="h2h-group">
+                        <h4>Empate (${tieGroup.length} equipos): ${tieGroup.join(' · ')}</h4>
+                        <table class="h2h-table">
+                            <thead><tr>
+                                <th style="text-align:left">Equipo</th>
+                                <th>H2H W</th>
+                                <th>Mapas H2H</th>
+                                <th>Rondas H2H</th>
+                            </tr></thead>
+                            <tbody>`;
+                    sorted.forEach(team => {
+                        const s = h2h[team];
+                        const mapStr   = `${s.mapWins}-${s.mapLosses} (${s.mapDiff >= 0 ? '+' : ''}${s.mapDiff})`;
+                        const rdStr    = `${s.roundWins}-${s.roundLosses} (${s.roundDiff >= 0 ? '+' : ''}${s.roundDiff})`;
+                        const rowCls   = s.matchWins === maxWins && maxWins !== minWins ? 'h2h-winner'
+                                       : s.matchWins === minWins && maxWins !== minWins ? 'h2h-loser'
+                                       : 'h2h-neutral';
+                        html += `<tr class="${rowCls}">
+                            <td>${team}</td>
+                            <td>${s.matchWins}</td>
+                            <td>${mapStr}</td>
+                            <td>${rdStr}</td>
+                        </tr>`;
+                    });
+                    html += `</tbody></table></div>`;
+                });
+
+                document.getElementById('modal-content').innerHTML = html;
+                document.getElementById('h2h-modal').style.display = 'flex';
+            }
+
+            function closeH2HModal(event) {
+                if (!event || event.target === document.getElementById('h2h-modal')) {
+                    document.getElementById('h2h-modal').style.display = 'none';
+                }
+            }
+
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape') closeH2HModal();
+            });
+
             function renderTables() {
                 const alphaStandings = calculateCurrentStandings(alphaTeams, alphaPlayed, alphaRemaining);
                 const omegaStandings = calculateCurrentStandings(omegaTeams, omegaPlayed, omegaRemaining);
+                currentStandings.alpha = alphaStandings;
+                currentStandings.omega = omegaStandings;
                 drawTable("alpha-table", alphaStandings, probabilitiesCache.alpha);
                 drawTable("omega-table", omegaStandings, probabilitiesCache.omega);
+                document.getElementById('btn-h2h-alpha').disabled = getActiveTies(alphaStandings).length === 0;
+                document.getElementById('btn-h2h-omega').disabled = getActiveTies(omegaStandings).length === 0;
             }
 
             function renderGroupMatches(containerId, matches, groupName) {
@@ -667,6 +842,16 @@
             renderGroupMatches("omega-matches", omegaRemaining, "omega");
             renderTables();
         </script>
+        <div id="h2h-modal" class="modal-overlay" style="display:none;" onclick="closeH2HModal(event)">
+            <div class="modal-box" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <span id="modal-title">Desempate H2H</span>
+                    <button class="modal-close" onclick="closeH2HModal()">&#x2715;</button>
+                </div>
+                <div id="modal-content"></div>
+            </div>
+        </div>
+
         <script data-goatcounter="https://braveiitoor.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
     </body>
