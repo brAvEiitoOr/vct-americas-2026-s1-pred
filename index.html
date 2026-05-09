@@ -162,7 +162,8 @@
                             <th>Mapas</th>
                             <th title="Diferencia de rondas">Rondas</th>
                             <th title="Probabilidad de quedar 1ro (Bye a Semis)">1º (Bye)</th>
-                            <th title="Probabilidad de quedar 2do o 3ro (Upper)">2º-3º (Up)</th>
+                            <th title="Probabilidad de quedar 2do (Upper)">2º (Up)</th>
+                            <th title="Probabilidad de quedar 3ro (Upper)">3º (Up)</th>
                             <th title="Probabilidad de quedar 4to (Lower)">4º (Low)</th>
                             <th title="Probabilidad de eliminación">OUT</th>
                         </tr>
@@ -191,7 +192,8 @@
                             <th>Mapas</th>
                             <th title="Diferencia de rondas">Rondas</th>
                             <th title="Probabilidad de quedar 1ro (Bye a Semis)">1º (Bye)</th>
-                            <th title="Probabilidad de quedar 2do o 3ro (Upper)">2º-3º (Up)</th>
+                            <th title="Probabilidad de quedar 2do (Upper)">2º (Up)</th>
+                            <th title="Probabilidad de quedar 3ro (Upper)">3º (Up)</th>
                             <th title="Probabilidad de quedar 4to (Lower)">4º (Low)</th>
                             <th title="Probabilidad de eliminación">OUT</th>
                         </tr>
@@ -471,7 +473,7 @@
                 fixedRemaining.forEach(m => applyMatch(stats, m.t1, m.t2, m.s1, m.s2, m.maps));
 
                 let placementCounts = {};
-                teams.forEach(t => placementCounts[t] = { first:0, upper:0, lower:0, out:0 });
+                teams.forEach(t => placementCounts[t] = { first:0, second:0, third:0, lower:0, out:0 });
 
                 // Simulation uses 13-0 per map for all future matches
                 const outcomes = [
@@ -487,8 +489,8 @@
                         totalPermutations++;
                         const standings = sortStandings(Object.values(stats), currentMatches);
                         placementCounts[standings[0].name].first++;
-                        placementCounts[standings[1].name].upper++;
-                        placementCounts[standings[2].name].upper++;
+                        placementCounts[standings[1].name].second++;
+                        placementCounts[standings[2].name].third++;
                         placementCounts[standings[3].name].lower++;
                         placementCounts[standings[4].name].out++;
                         placementCounts[standings[5].name].out++;
@@ -511,8 +513,8 @@
                     totalPermutations = 1;
                     const standings = sortStandings(Object.values(stats), baseMatches);
                     placementCounts[standings[0].name].first++;
-                    placementCounts[standings[1].name].upper++;
-                    placementCounts[standings[2].name].upper++;
+                    placementCounts[standings[1].name].second++;
+                    placementCounts[standings[2].name].third++;
                     placementCounts[standings[3].name].lower++;
                     placementCounts[standings[4].name].out++;
                     placementCounts[standings[5].name].out++;
@@ -527,7 +529,8 @@
                     });
                     results[t] = {
                         first: make(placementCounts[t].first),
-                        upper: make(placementCounts[t].upper),
+                        second: make(placementCounts[t].second),
+                        third: make(placementCounts[t].third),
                         lower: make(placementCounts[t].lower),
                         out:   make(placementCounts[t].out),
                     };
@@ -593,7 +596,8 @@
                         <td>${team.mapWins} - ${team.mapLosses}</td>
                         <td>${formatRoundDiff(roundDiff)}</td>
                         <td>${formatProb(p?.first)}</td>
-                        <td>${formatProb(p?.upper)}</td>
+                        <td>${formatProb(p?.second)}</td>
+                        <td>${formatProb(p?.third)}</td>
                         <td>${formatProb(p?.lower)}</td>
                         <td>${formatProb(p?.out)}</td>
                     `;
